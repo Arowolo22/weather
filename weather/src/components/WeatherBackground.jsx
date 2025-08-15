@@ -25,10 +25,38 @@ const WeatherBackground = ({ condition }) => {
         default: video
     };
 
-    const getBackground =()=>{
-        if(!condition) return gifs.default
-        const weatherType = condition.main
+   
+
+    const getBackground = ()=>{
+        if(!condition) return gifs.default;
+        const weatherType = condition.main;
         const asset = gifs[weatherType]
 
-        if(!asset) return gifs.default
+        if (!asset) return gifs.default;
+
+        if (typeof asset === 'object')
+            return condition.isDay ? asset.day : asset.night;
+            return asset;
+        }
+         const background = getBackground();
+
+         return(
+            <div className='fixed inset-0 overflow-hidden'>
+                {background === video ?(
+                    <video autoPlay loop muted className='w-full h-full object-cover opacity-100 pointer-events-auto animate-fade-in'>
+                        <source src={video} alt='video/mp4'></source>
+                    </video>
+                ):(
+                    <img src={background} alt='Weather-bg' className='w-full h-ful object-cover opacity-20 pointer-events-auto animate-fade-in'/>
+                )}
+
+                <div className='absolute inset-0 bg-black/30'/>
+
+               
+
+            </div>
+         )
+
     }
+    export default WeatherBackground;
+    
